@@ -46,7 +46,7 @@
         }
         .panels {
             display:flex; gap:1rem; width:85%; max-width:1200px;
-            min-height:80vh; transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+            height:85vh; transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
         }
         .panel {
             background:var(--container); border-radius:20px; padding:1.8rem;
@@ -87,7 +87,7 @@
         .check-btn {
             width:100%; padding:0.85rem; background:var(--primary); color:white;
             border:none; border-radius:12px; font-size:0.95rem; font-weight:600;
-            cursor:pointer; margin-top:0.5rem; transition:all 0.2s;
+            cursor:pointer; margin-top:auto; transition:all 0.2s;
         }
         .check-btn:hover { transform:translateY(-2px); box-shadow:0 4px 20px rgba(123,140,222,0.4); }
         .check-btn:disabled { opacity:0.7; cursor:not-allowed; transform:none; }
@@ -98,7 +98,7 @@
         }
         .placeholder-icon { font-size:2.5rem; opacity:0.2; }
         .result-box {
-            border-radius:16px; padding:1.5rem; text-align:center;
+            flex:1; border-radius:16px; padding:1.5rem; text-align:center;
             display:flex; flex-direction:column; justify-content:center; align-items:center;
         }
         .result-box.fraud {
@@ -110,27 +110,17 @@
             background:linear-gradient(135deg,rgba(6,214,160,0.12),rgba(6,214,160,0.04));
             border:2px solid var(--success); animation:fadeInUp 0.6s ease-out;
         }
-        .result-emoji { font-size:2.5rem; margin-bottom:0.5rem; }
-        .result-title { font-size:1.4rem; font-weight:700; margin-bottom:0.3rem; }
+        .result-emoji { font-size:2.8rem; margin-bottom:0.5rem; }
+        .result-title { font-size:1.5rem; font-weight:700; margin-bottom:0.3rem; }
         .result-sub { color:var(--subtext); font-size:0.88rem; margin-bottom:0.8rem; }
-        .risk-score { font-size:2rem; font-weight:700; margin-bottom:1rem; }
-        .result-meta { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:1rem; }
+        .risk-score { font-size:2.2rem; font-weight:700; margin-bottom:1rem; }
+        .result-meta { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:0.8rem; }
         .meta-chip {
             background:var(--input-bg); padding:0.3rem 0.7rem;
             border-radius:20px; font-size:0.78rem;
             color:var(--subtext); border:1px solid var(--border);
         }
-        .reasons-box { width:100%; margin-top:0.8rem; text-align:left; }
-        .reasons-title { font-size:0.82rem; font-weight:700; margin-bottom:0.5rem; text-align:center; }
-        .reason-item {
-            display:flex; align-items:flex-start; gap:0.5rem;
-            padding:0.4rem 0.7rem; border-radius:8px;
-            margin-bottom:0.4rem; font-size:0.82rem; color:var(--text);
-            animation:slideIn 0.3s ease-out;
-        }
-        .reason-item.fraud-r { background:rgba(239,35,60,0.08); }
-        .reason-item.safe-r  { background:rgba(6,214,160,0.08); }
-        .reason-icon { font-size:0.9rem; flex-shrink:0; }
+        .hint-text { font-size:0.76rem; color:var(--subtext); opacity:0.6; margin-top:0.5rem; }
         .history-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; }
         .clear-btn {
             background:none; border:1px solid var(--border); color:var(--subtext);
@@ -150,6 +140,16 @@
         .badge { display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.72rem; font-weight:700; color:white; }
         .badge-fraud { background:var(--danger); }
         .badge-normal { background:var(--success); }
+        .reasons-expand { margin-top:0.6rem; }
+        .reasons-title { font-size:0.78rem; font-weight:700; margin-bottom:0.4rem; }
+        .reason-item {
+            display:flex; align-items:flex-start; gap:0.5rem;
+            padding:0.35rem 0.6rem; border-radius:8px;
+            margin-bottom:0.3rem; font-size:0.78rem; color:var(--text);
+        }
+        .reason-item.fraud-r { background:rgba(239,35,60,0.08); }
+        .reason-item.safe-r  { background:rgba(6,214,160,0.08); }
+        .reason-icon { font-size:0.85rem; flex-shrink:0; }
         .click-hint { font-size:0.75rem; color:var(--subtext); text-align:center; margin-top:auto; padding-top:0.8rem; opacity:0.6; }
         .spinner {
             display:inline-block; width:16px; height:16px;
@@ -181,7 +181,7 @@
             body { overflow:auto; }
             .theme-bar { top:8px; right:10px; }
             .app { align-items:flex-start; padding:0.5rem; padding-top:3.5rem; }
-            .panels { flex-direction:column !important; width:100% !important; max-width:100% !important; min-height:unset !important; }
+            .panels { flex-direction:column !important; width:100% !important; max-width:100% !important; height:auto !important; }
             .panel { flex:none !important; width:100% !important; min-height:250px; }
             .click-hint { display:none !important; }
         }
@@ -204,7 +204,6 @@
             <div class="panel-sub">Enter transaction details below</div>
             <div class="divider"></div>
 
-            <!-- Account Type -->
             <div class="input-group">
                 <label class="input-label">🏦 Account Type</label>
                 <select class="input-field" id="account-type" onchange="updateAccountInfo()">
@@ -225,7 +224,6 @@
                 </div>
             </div>
 
-            <!-- Currency -->
             <div class="input-group">
                 <label class="input-label">🌍 Currency</label>
                 <select class="input-field" id="currency" onchange="updateCurrencyLabel()">
@@ -243,7 +241,6 @@
                 </select>
             </div>
 
-            <!-- Amount -->
             <div class="input-group">
                 <label class="input-label" id="amount-label">💰 Amount (₹)</label>
                 <input type="number" class="input-field" id="amount"
@@ -252,7 +249,6 @@
                     onkeydown="if(event.key==='Enter') checkTransaction()">
             </div>
 
-            <!-- Time — clean dropdown, works on all devices -->
             <div class="input-group">
                 <label class="input-label">⏰ Transaction Time</label>
                 <select class="input-field" id="time-hour">
@@ -297,7 +293,7 @@
                 <div class="placeholder-icon">🔍</div>
                 <p>Results appear here</p>
             </div>
-            <div id="result-content" style="display:none; flex-direction:column;"></div>
+            <div id="result-content" style="display:none; flex-direction:column; flex:1;"></div>
             <div class="click-hint" id="result-hint" style="display:none">Click to expand</div>
         </div>
 
@@ -309,7 +305,7 @@
             </div>
             <div class="divider" style="margin-top:0;"></div>
             <div class="history-list" id="history-list"></div>
-            <div class="click-hint">Click to expand</div>
+            <div class="click-hint">👆 Click any item for details</div>
         </div>
 
     </div>
@@ -366,12 +362,12 @@
         const acc    = getAccount();
         const inr    = amount * c.rate;
         const pct    = Math.min((inr / acc.dailyLimit) * 100, 100);
+        const limitInCurrency = (acc.dailyLimit / c.rate).toFixed(0);
 
         document.getElementById('limit-fill').style.width      = pct + '%';
         document.getElementById('limit-fill').style.background = pct > 90 ? '#ef233c' : pct > 60 ? '#f4a261' : '#06d6a0';
         document.getElementById('limit-percent').textContent   = pct.toFixed(1) + '%';
-        const limitInCurrency = (acc.dailyLimit / c.rate).toFixed(0);
-document.getElementById('limit-label').textContent = `${acc.label} daily limit (${c.symbol}${parseInt(limitInCurrency).toLocaleString()})`;
+        document.getElementById('limit-label').textContent     = `${acc.label} daily limit (${c.symbol}${parseInt(limitInCurrency).toLocaleString()})`;
     }
 
     function setTheme(t) {
@@ -385,7 +381,7 @@ document.getElementById('limit-label').textContent = `${acc.label} daily limit (
         const h   = parseInt(document.getElementById('time-hour').value);
         const reasons = [];
         if (inr > acc.suspiciousAbove) {
-            reasons.push({ icon:'🚨', text:`${c.symbol}${amount.toFixed(0)} exceeds suspicious threshold for ${acc.label} (max safe: ₹${acc.suspiciousAbove.toLocaleString()})` });
+            reasons.push({ icon:'🚨', text:`${c.symbol}${amount.toFixed(0)} exceeds suspicious threshold for ${acc.label} (max safe: ${c.symbol}${(acc.suspiciousAbove/c.rate).toFixed(0)})` });
         }
         if (inr > acc.dailyLimit * 0.8) {
             reasons.push({ icon:'💸', text:`Uses over 80% of your ${acc.label} daily limit` });
@@ -463,11 +459,11 @@ document.getElementById('limit-label').textContent = `${acc.label} daily limit (
     });
 
     async function checkTransaction() {
-        const amount   = parseFloat(document.getElementById('amount').value) || 0;
-        const currency = getCurrency();
-        const acc      = getAccount();
-        const timeStr  = getTimeStr();
-        const h        = parseInt(document.getElementById('time-hour').value);
+        const amount    = parseFloat(document.getElementById('amount').value) || 0;
+        const currency  = getCurrency();
+        const acc       = getAccount();
+        const timeStr   = getTimeStr();
+        const h         = parseInt(document.getElementById('time-hour').value);
         const amountINR = amount * currency.rate;
         const timeVal   = h * 3600;
         const btn = document.getElementById('check-btn');
@@ -485,14 +481,18 @@ document.getElementById('limit-label').textContent = `${acc.label} daily limit (
             });
             const data = await res.json();
 
-            // Account-based override
             if (amountINR > acc.suspiciousAbove && !data.is_fraud) {
                 data.is_fraud = true;
                 data.result   = 'Fraud';
                 data.risk     = Math.max(data.risk, 75);
             }
 
-            txHistory.unshift({ amount, timeStr, currency, acc, risk:data.risk, result:data.result, is_fraud:data.is_fraud, ts:new Date().toLocaleTimeString() });
+            txHistory.unshift({
+                amount, timeStr, currency, acc,
+                risk: data.risk, result: data.result,
+                is_fraud: data.is_fraud,
+                ts: new Date().toLocaleTimeString()
+            });
 
             renderResult(data, amount, timeStr, currency, acc);
             renderHistory();
@@ -515,15 +515,6 @@ document.getElementById('limit-label').textContent = `${acc.label} daily limit (
         content.style.flex = '1';
 
         const isFraud = data.is_fraud;
-        const reasons = isFraud
-            ? getFraudReasons(amount, timeStr, data.risk, currency, acc)
-            : getSafeReasons(amount, timeStr, data.risk, currency, acc);
-
-        const reasonsHTML = reasons.map(r => `
-            <div class="reason-item ${isFraud ? 'fraud-r' : 'safe-r'}">
-                <span class="reason-icon">${r.icon}</span>
-                <span>${r.text}</span>
-            </div>`).join('');
 
         content.innerHTML = `
             <div class="result-box ${isFraud ? 'fraud' : 'normal'}">
@@ -531,7 +522,9 @@ document.getElementById('limit-label').textContent = `${acc.label} daily limit (
                 <div class="result-title" style="color:var(${isFraud ? '--danger' : '--success'})">
                     ${isFraud ? 'FRAUD DETECTED!' : 'NORMAL TRANSACTION'}
                 </div>
-                <div class="result-sub">${isFraud ? 'This transaction looks suspicious!' : 'This transaction looks safe!'}</div>
+                <div class="result-sub">
+                    ${isFraud ? 'This transaction looks suspicious!' : 'This transaction looks safe!'}
+                </div>
                 <div class="risk-score" style="color:var(${isFraud ? '--danger' : '--success'})">
                     ${data.risk.toFixed(1)}% Risk
                 </div>
@@ -541,21 +534,27 @@ document.getElementById('limit-label').textContent = `${acc.label} daily limit (
                     <div class="meta-chip">${acc.label}</div>
                     <div class="meta-chip">🎯 ${data.result}</div>
                 </div>
-                <div class="reasons-box">
-                    <div class="reasons-title" style="color:var(${isFraud ? '--danger' : '--success'})">
-                        ${isFraud ? '⚠️ Why this looks suspicious:' : '✅ Why this looks safe:'}
-                    </div>
-                    ${reasonsHTML}
-                </div>
+                <div class="hint-text">👉 Click history item to see why</div>
             </div>`;
     }
 
     function renderHistory() {
         const list = document.getElementById('history-list');
         list.innerHTML = '';
-        txHistory.forEach(h => {
+
+        txHistory.forEach((h, index) => {
             const color = h.is_fraud ? 'var(--danger)' : 'var(--success)';
             const badge = h.is_fraud ? 'badge-fraud' : 'badge-normal';
+            const reasons = h.is_fraud
+                ? getFraudReasons(h.amount, h.timeStr, h.risk, h.currency, h.acc)
+                : getSafeReasons(h.amount, h.timeStr, h.risk, h.currency, h.acc);
+
+            const reasonsHTML = reasons.map(r => `
+                <div class="reason-item ${h.is_fraud ? 'fraud-r' : 'safe-r'}">
+                    <span class="reason-icon">${r.icon}</span>
+                    <span>${r.text}</span>
+                </div>`).join('');
+
             const el = document.createElement('div');
             el.className = 'history-item';
             el.style.borderColor = color;
@@ -566,9 +565,27 @@ document.getElementById('limit-label').textContent = `${acc.label} daily limit (
                 </div>
                 <div class="history-meta-text">
                     ${h.acc.label} &nbsp;|&nbsp; ⏰ ${h.timeStr} &nbsp;|&nbsp; 🎯 ${h.risk.toFixed(1)}% &nbsp;|&nbsp; 🕐 ${h.ts}
+                </div>
+                <div id="reasons-${index}" style="display:none; margin-top:0.6rem;">
+                    <div class="reasons-title" style="color:var(${h.is_fraud ? '--danger' : '--success'})">
+                        ${h.is_fraud ? '⚠️ Why suspicious:' : '✅ Why safe:'}
+                    </div>
+                    ${reasonsHTML}
                 </div>`;
+
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const reasonsDiv = document.getElementById(`reasons-${index}`);
+                const isVisible  = reasonsDiv.style.display !== 'none';
+                document.querySelectorAll('[id^="reasons-"]').forEach(r => r.style.display = 'none');
+                reasonsDiv.style.display = isVisible ? 'none' : 'block';
+                activePanel = 'history';
+                setLayout();
+            });
+
             list.appendChild(el);
         });
+
         document.getElementById('panel-history').classList.remove('hidden');
     }
 
