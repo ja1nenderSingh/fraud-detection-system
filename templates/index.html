@@ -7,359 +7,291 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f0f1a;
-            --container: #1a1a2e;
-            --text: #e0e0ff;
-            --subtext: #9090bb;
-            --primary: #7b8cde;
-            --success: #06d6a0;
-            --danger: #ef233c;
-            --border: #2a2a4a;
-            --input-bg: #12122a;
+            --bg: #0f0f1a; --container: #1a1a2e; --text: #e0e0ff;
+            --subtext: #9090bb; --primary: #7b8cde; --success: #06d6a0;
+            --danger: #ef233c; --border: #2a2a4a; --input-bg: #12122a;
             --history-bg: #12122a;
         }
         [data-theme="light"] {
-            --bg: #f0f2f5;
-            --container: #ffffff;
-            --text: #1a1a2e;
-            --subtext: #555577;
-            --primary: #4361ee;
-            --border: #e0e0f0;
-            --input-bg: #f5f7fa;
-            --history-bg: #f0f2ff;
+            --bg: #f0f2f5; --container: #ffffff; --text: #1a1a2e;
+            --subtext: #555577; --primary: #4361ee; --border: #e0e0f0;
+            --input-bg: #f5f7fa; --history-bg: #f0f2ff;
         }
+        [data-theme="pride"] {
+            --bg: #0f0f1a; --container: #1a1a2e; --text: #ffffff;
+            --subtext: #cccccc; --border: transparent;
+            --input-bg: #12122a; --history-bg: #12122a;
+        }
+
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
 
         body {
-            background: var(--bg);
-            color: var(--text);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: background 0.3s, color 0.3s;
+            background:var(--bg); color:var(--text);
+            min-height:100vh; display:flex; flex-direction:column;
+            transition:background 0.3s, color 0.3s;
         }
 
-        /* ── Theme bar ── */
         .theme-bar {
-            position: fixed;
-            top: 14px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 2px;
-            background: var(--container);
-            padding: 5px 8px;
-            border-radius: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
+            position:fixed; top:14px; right:20px; z-index:1000;
+            display:flex; gap:2px; background:var(--container);
+            padding:5px 8px; border-radius:30px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.3); border:1px solid var(--border);
         }
         .theme-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 3px 5px;
-            border-radius: 20px;
-            transition: background 0.2s, transform 0.2s;
+            background:none; border:none; cursor:pointer;
+            font-size:1rem; padding:3px 5px; border-radius:20px;
+            transition:background 0.2s, transform 0.2s;
         }
-        .theme-btn:hover { background: var(--input-bg); transform: scale(1.15); }
+        .theme-btn:hover { background:var(--input-bg); transform:scale(1.15); }
 
-        /* ── Main wrapper ── */
         .app {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
+            flex:1; display:flex; align-items:center;
+            justify-content:center; padding:1rem; padding-top:4rem;
         }
 
-        /* ── Panels wrapper ── */
         .panels {
-            display: flex;
-            gap: 1rem;
-            width: 80%;
-            max-width: 1200px;
-            height: 85vh;
-            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            display:flex; gap:1rem; width:85%; max-width:1200px;
+            min-height:80vh; transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
         }
 
-        /* ── Panel base ── */
         .panel {
-            background: var(--container);
-            border-radius: 20px;
-            padding: 1.8rem;
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: flex 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
-            display: flex;
-            flex-direction: column;
+            background:var(--container); border-radius:20px; padding:1.8rem;
+            border:1px solid var(--border); box-shadow:0 8px 32px rgba(0,0,0,0.15);
+            overflow-y:auto; overflow-x:hidden;
+            transition:flex 0.4s cubic-bezier(0.4,0,0.2,1);
+            display:flex; flex-direction:column;
         }
-        .panel.hidden { display: none !important; }
-        .panel::-webkit-scrollbar { width: 4px; }
-        .panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+        .panel.hidden { display:none !important; }
+        .panel::-webkit-scrollbar { width:4px; }
+        .panel::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
 
-        /* ── Panel flex sizes ── */
-        #panel-form   { flex: 10; }
-        #panel-result { flex: 10; }
-        #panel-history{ flex: 4; }
-
-        /* ── Pride theme ── */
-        [data-theme="pride"] {
-            --bg: #0f0f1a;
-            --container: #1a1a2e;
-            --text: #ffffff;
-            --subtext: #cccccc;
-            --border: transparent;
-            --input-bg: #12122a;
-            --history-bg: #12122a;
-        }
         [data-theme="pride"] .panel {
-            border: 2px solid transparent;
-            background: linear-gradient(#1a1a2e,#1a1a2e) padding-box,
+            border:2px solid transparent;
+            background:linear-gradient(#1a1a2e,#1a1a2e) padding-box,
                         linear-gradient(135deg,#ff0000,#ff7700,#ffff00,#00cc00,#0000ff,#8b00ff) border-box;
         }
         [data-theme="pride"] .panel-title {
-            background: linear-gradient(135deg,#ff0000,#ff7700,#ffff00,#00cc00,#0000ff,#8b00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            background:linear-gradient(135deg,#ff0000,#ff7700,#ffff00,#00cc00,#0000ff,#8b00ff);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
         }
 
-        /* ── Typography ── */
-        .panel-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 0.3rem;
-        }
-        .panel-sub {
-            font-size: 0.85rem;
-            color: var(--subtext);
-            margin-bottom: 1.2rem;
-        }
-        .divider { height:1px; background:var(--border); margin:1rem 0; }
+        .panel-title { font-size:1.3rem; font-weight:700; color:var(--text); margin-bottom:0.3rem; }
+        .panel-sub { font-size:0.85rem; color:var(--subtext); margin-bottom:1rem; }
+        .divider { height:1px; background:var(--border); margin:0.8rem 0; }
 
-        /* ── Inputs ── */
-        .input-group { margin-bottom: 1rem; }
-        .input-label {
-            display: block;
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.4rem;
-        }
+        .input-group { margin-bottom:0.9rem; }
+        .input-label { display:block; font-size:0.88rem; font-weight:600; color:var(--text); margin-bottom:0.4rem; }
         .input-field {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 0.95rem;
-            outline: none;
-            transition: border 0.2s, box-shadow 0.2s;
+            width:100%; padding:0.75rem 1rem;
+            background:var(--input-bg); border:1px solid var(--border);
+            border-radius:10px; color:var(--text); font-size:0.95rem;
+            outline:none; transition:border 0.2s, box-shadow 0.2s;
         }
-        .input-field:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(123,140,222,0.15);
+        .input-field:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(123,140,222,0.15); }
+        select.input-field { cursor:pointer; }
+        input[type="time"].input-field { cursor:pointer; }
+        input[type="time"].input-field::-webkit-calendar-picker-indicator { filter:invert(0.6); cursor:pointer; }
+
+        /* Account type badge */
+        .account-badge {
+            display:inline-block; padding:3px 10px; border-radius:20px;
+            font-size:0.78rem; font-weight:700; margin-left:8px;
+            vertical-align:middle;
         }
 
-        /* ── Check button ── */
+        /* Account limit bar */
+        .limit-bar-wrap { margin-top:6px; }
+        .limit-bar-label { font-size:0.75rem; color:var(--subtext); margin-bottom:3px; display:flex; justify-content:space-between; }
+        .limit-bar { height:5px; background:var(--border); border-radius:10px; overflow:hidden; }
+        .limit-bar-fill { height:100%; border-radius:10px; transition:width 0.4s, background 0.3s; }
+
         .check-btn {
-            width: 100%;
-            padding: 0.85rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            transition: all 0.2s;
+            width:100%; padding:0.85rem; background:var(--primary); color:white;
+            border:none; border-radius:12px; font-size:0.95rem; font-weight:600;
+            cursor:pointer; margin-top:0.5rem; transition:all 0.2s;
         }
-        .check-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(123,140,222,0.4); }
-        .check-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .check-btn:hover { transform:translateY(-2px); box-shadow:0 4px 20px rgba(123,140,222,0.4); }
+        .check-btn:disabled { opacity:0.7; cursor:not-allowed; transform:none; }
 
-        /* ── Result placeholder ── */
         .result-placeholder {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--subtext);
-            text-align: center;
-            gap: 0.8rem;
+            flex:1; display:flex; flex-direction:column;
+            align-items:center; justify-content:center;
+            color:var(--subtext); text-align:center; gap:0.8rem;
         }
-        .placeholder-icon { font-size: 2.5rem; opacity: 0.2; }
+        .placeholder-icon { font-size:2.5rem; opacity:0.2; }
 
-        /* ── Result box ── */
         .result-box {
-            border-radius: 16px;
-            padding: 2rem 1.5rem;
-            text-align: center;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            border-radius:16px; padding:1.5rem; text-align:center;
+            display:flex; flex-direction:column; justify-content:center; align-items:center;
         }
         .result-box.fraud {
-            background: linear-gradient(135deg,rgba(239,35,60,0.12),rgba(239,35,60,0.04));
-            border: 2px solid var(--danger);
-            animation: shake 0.5s ease-in-out, flashRed 1s ease-in-out 3;
+            background:linear-gradient(135deg,rgba(239,35,60,0.12),rgba(239,35,60,0.04));
+            border:2px solid var(--danger);
+            animation:shake 0.5s ease-in-out, flashRed 1s ease-in-out 3;
         }
         .result-box.normal {
-            background: linear-gradient(135deg,rgba(6,214,160,0.12),rgba(6,214,160,0.04));
-            border: 2px solid var(--success);
-            animation: fadeInUp 0.6s ease-out;
+            background:linear-gradient(135deg,rgba(6,214,160,0.12),rgba(6,214,160,0.04));
+            border:2px solid var(--success); animation:fadeInUp 0.6s ease-out;
         }
-        .result-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
-        .result-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.3rem; }
-        .result-sub { color: var(--subtext); font-size: 0.9rem; margin-bottom: 1rem; }
-        .risk-score { font-size: 2.2rem; font-weight: 700; }
-        .result-meta {
-            display: flex;
-            gap: 0.6rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
+        .result-emoji { font-size:2.5rem; margin-bottom:0.5rem; }
+        .result-title { font-size:1.4rem; font-weight:700; margin-bottom:0.3rem; }
+        .result-sub { color:var(--subtext); font-size:0.88rem; margin-bottom:0.8rem; }
+        .risk-score { font-size:2rem; font-weight:700; margin-bottom:1rem; }
+
+        .result-meta { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:1rem; }
         .meta-chip {
-            background: var(--input-bg);
-            padding: 0.35rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--subtext);
-            border: 1px solid var(--border);
+            background:var(--input-bg); padding:0.3rem 0.7rem;
+            border-radius:20px; font-size:0.78rem;
+            color:var(--subtext); border:1px solid var(--border);
         }
 
-        /* ── History panel ── */
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.8rem;
+        .reasons-box { width:100%; margin-top:0.8rem; text-align:left; }
+        .reasons-title { font-size:0.82rem; font-weight:700; margin-bottom:0.5rem; text-align:center; }
+        .reason-item {
+            display:flex; align-items:flex-start; gap:0.5rem;
+            padding:0.4rem 0.7rem; border-radius:8px;
+            margin-bottom:0.4rem; font-size:0.82rem; color:var(--text);
+            animation:slideIn 0.3s ease-out;
         }
+        .reason-item.fraud-r { background:rgba(239,35,60,0.08); }
+        .reason-item.safe-r  { background:rgba(6,214,160,0.08); }
+        .reason-icon { font-size:0.9rem; flex-shrink:0; }
+
+        .history-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; }
         .clear-btn {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--subtext);
-            padding: 3px 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.78rem;
-            transition: all 0.2s;
+            background:none; border:1px solid var(--border); color:var(--subtext);
+            padding:3px 8px; border-radius:8px; cursor:pointer; font-size:0.78rem; transition:all 0.2s;
         }
-        .clear-btn:hover { background: var(--danger); color: white; border-color: var(--danger); }
+        .clear-btn:hover { background:var(--danger); color:white; border-color:var(--danger); }
 
-        .history-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .history-list { display:flex; flex-direction:column; gap:0.5rem; }
         .history-item {
-            background: var(--history-bg);
-            border-radius: 12px;
-            padding: 0.7rem 0.9rem;
-            border-left: 4px solid;
-            cursor: pointer;
-            transition: transform 0.2s;
-            animation: slideIn 0.3s ease-out;
+            background:var(--history-bg); border-radius:12px;
+            padding:0.7rem 0.9rem; border-left:4px solid;
+            cursor:pointer; transition:transform 0.2s; animation:slideIn 0.3s ease-out;
         }
-        .history-item:hover { transform: translateX(4px); }
-        .history-item-top { display: flex; justify-content: space-between; align-items: center; }
-        .history-amount { font-weight: 600; font-size: 0.9rem; color: var(--text); }
-        .history-meta-text { font-size: 0.76rem; color: var(--subtext); margin-top: 3px; }
+        .history-item:hover { transform:translateX(4px); }
+        .history-item-top { display:flex; justify-content:space-between; align-items:center; }
+        .history-amount { font-weight:600; font-size:0.88rem; color:var(--text); }
+        .history-meta-text { font-size:0.75rem; color:var(--subtext); margin-top:3px; }
 
-        .badge {
-            display: inline-block;
-            padding: 2px 9px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: white;
-        }
-        .badge-fraud { background: var(--danger); }
-        .badge-normal { background: var(--success); }
+        .badge { display:inline-block; padding:2px 9px; border-radius:20px; font-size:0.72rem; font-weight:700; color:white; }
+        .badge-fraud { background:var(--danger); }
+        .badge-normal { background:var(--success); }
 
-        /* ── Click hint ── */
-        .click-hint {
-            font-size: 0.75rem;
-            color: var(--subtext);
-            text-align: center;
-            margin-top: auto;
-            padding-top: 0.8rem;
-            opacity: 0.6;
-        }
+        .click-hint { font-size:0.75rem; color:var(--subtext); text-align:center; margin-top:auto; padding-top:0.8rem; opacity:0.6; }
 
-        /* ── Spinner ── */
         .spinner {
-            display: inline-block;
-            width: 16px; height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            vertical-align: middle;
-            margin-right: 6px;
+            display:inline-block; width:16px; height:16px;
+            border:2px solid rgba(255,255,255,0.3); border-top-color:white;
+            border-radius:50%; animation:spin 0.7s linear infinite;
+            vertical-align:middle; margin-right:6px;
         }
 
-        /* ── Animations ── */
         @keyframes shake {
-            0%,100% { transform: translateX(0); }
-            20% { transform: translateX(-8px); }
-            40% { transform: translateX(8px); }
-            60% { transform: translateX(-8px); }
-            80% { transform: translateX(8px); }
+            0%,100% { transform:translateX(0); }
+            20% { transform:translateX(-8px); }
+            40% { transform:translateX(8px); }
+            60% { transform:translateX(-8px); }
+            80% { transform:translateX(8px); }
         }
         @keyframes flashRed {
-            0%,100% { box-shadow: 0 0 0 var(--danger); }
-            50% { box-shadow: 0 0 30px var(--danger); }
+            0%,100% { box-shadow:0 0 0 var(--danger); }
+            50% { box-shadow:0 0 30px var(--danger); }
         }
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from { opacity:0; transform:translateY(20px); }
+            to   { opacity:1; transform:translateY(0); }
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin { to { transform:rotate(360deg); } }
         @keyframes slideIn {
-            from { opacity: 0; transform: translateX(10px); }
-            to   { opacity: 1; transform: translateX(0); }
+            from { opacity:0; transform:translateX(10px); }
+            to   { opacity:1; transform:translateX(0); }
+        }
+
+        @media (max-width:768px) {
+            body { overflow:auto; }
+            .theme-bar { top:8px; right:10px; }
+            .app { align-items:flex-start; padding:0.5rem; padding-top:3.5rem; }
+            .panels { flex-direction:column !important; width:100% !important; max-width:100% !important; min-height:unset !important; }
+            .panel { flex:none !important; width:100% !important; min-height:250px; }
+            .click-hint { display:none !important; }
         }
     </style>
 </head>
 <body data-theme="dark">
 
-<!-- Theme bar -->
 <div class="theme-bar">
-    <button class="theme-btn" onclick="setTheme('light')"  title="Light">☀️</button>
-    <button class="theme-btn" onclick="setTheme('dark')"   title="Dark">🌙</button>
-    <button class="theme-btn" onclick="setTheme('pride')"  title="Pride">🏳️‍🌈</button>
+    <button class="theme-btn" onclick="setTheme('light')" title="Light">☀️</button>
+    <button class="theme-btn" onclick="setTheme('dark')"  title="Dark">🌙</button>
+    <button class="theme-btn" onclick="setTheme('pride')" title="Pride">🏳️‍🌈</button>
 </div>
 
-<!-- App -->
 <div class="app">
     <div class="panels" id="panels">
 
         <!-- FORM PANEL -->
         <div class="panel" id="panel-form">
             <div class="panel-title">🔍 Fraud Detector</div>
-            <div class="panel-sub">Enter transaction details to check for fraud</div>
+            <div class="panel-sub">Enter transaction details below</div>
             <div class="divider"></div>
 
+            <!-- Account Type -->
             <div class="input-group">
-                <input type="number" class="input-field" id="amount" 
-    value="" min="0" step="10" 
-    placeholder="e.g. 500"
-    onkeydown="if(event.key==='Enter') checkTransaction()">
-    <input type="number" class="input-field" id="time-val" 
-    value="" min="0" step="1000" 
-    placeholder="e.g. 50000 (seconds since day start)"
-    onkeydown="if(event.key==='Enter') checkTransaction()">
+                <label class="input-label">🏦 Account Type</label>
+                <select class="input-field" id="account-type" onchange="updateAccountInfo()">
+                    <option value="student">🎓 Student Account</option>
+                    <option value="savings" selected>👤 Savings Account</option>
+                    <option value="current">💳 Current Account</option>
+                    <option value="business">🏢 Business Account</option>
+                    <option value="premium">💎 Premium Account</option>
+                </select>
+                <div class="limit-bar-wrap" id="limit-bar-wrap">
+                    <div class="limit-bar-label">
+                        <span id="limit-label">Daily limit usage</span>
+                        <span id="limit-percent">0%</span>
+                    </div>
+                    <div class="limit-bar">
+                        <div class="limit-bar-fill" id="limit-fill" style="width:0%;background:#06d6a0;"></div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Currency -->
             <div class="input-group">
-                <label class="input-label">⏱️ Time (seconds)</label>
-                <input type="number" class="input-field" id="time-val" value="50000" min="0" step="1000">
+                <label class="input-label">🌍 Currency</label>
+                <select class="input-field" id="currency" onchange="updateCurrencyLabel()">
+                    <option value="USD" data-symbol="$"   data-rate="83">🇺🇸 USD — US Dollar</option>
+                    <option value="EUR" data-symbol="€"   data-rate="90">🇪🇺 EUR — Euro</option>
+                    <option value="GBP" data-symbol="£"   data-rate="105">🇬🇧 GBP — British Pound</option>
+                    <option value="JPY" data-symbol="¥"   data-rate="0.55">🇯🇵 JPY — Japanese Yen</option>
+                    <option value="CNY" data-symbol="¥"   data-rate="11.5">🇨🇳 CNY — Chinese Yuan</option>
+                    <option value="INR" data-symbol="₹"   data-rate="1" selected>🇮🇳 INR — Indian Rupee</option>
+                    <option value="CAD" data-symbol="CA$" data-rate="61">🇨🇦 CAD — Canadian Dollar</option>
+                    <option value="AUD" data-symbol="A$"  data-rate="54">🇦🇺 AUD — Australian Dollar</option>
+                    <option value="CHF" data-symbol="CHF" data-rate="93">🇨🇭 CHF — Swiss Franc</option>
+                    <option value="SGD" data-symbol="S$"  data-rate="62">🇸🇬 SGD — Singapore Dollar</option>
+                    <option value="PHP" data-symbol="₱"   data-rate="1.47">🇵🇭 PHP — Philippine Peso</option>
+                </select>
+            </div>
+
+            <!-- Amount -->
+            <div class="input-group">
+                <label class="input-label" id="amount-label">💰 Amount (₹)</label>
+                <input type="number" class="input-field" id="amount"
+                    min="0" step="10" placeholder="e.g. 500"
+                    oninput="updateLimitBar()"
+                    onkeydown="if(event.key==='Enter') checkTransaction()">
+            </div>
+
+            <!-- Time -->
+            <div class="input-group">
+                <label class="input-label">⏰ Transaction Time</label>
+                <input type="time" class="input-field" id="time-val" value="14:00"
+                    onkeydown="if(event.key==='Enter') checkTransaction()">
+                <small style="color:var(--subtext);font-size:0.75rem;margin-top:4px;display:block;">
+                    💡 Late night (12AM–6AM) transactions are more suspicious
+                </small>
             </div>
 
             <button class="check-btn" id="check-btn" onclick="checkTransaction()">
@@ -373,7 +305,7 @@
                 <div class="placeholder-icon">🔍</div>
                 <p>Results appear here</p>
             </div>
-            <div id="result-content" style="display:none; flex:1; display:none; flex-direction:column;"></div>
+            <div id="result-content" style="display:none; flex-direction:column;"></div>
             <div class="click-hint" id="result-hint" style="display:none">Click to expand</div>
         </div>
 
@@ -381,7 +313,7 @@
         <div class="panel hidden" id="panel-history">
             <div class="history-header">
                 <div class="panel-title" style="font-size:1.05rem;">📜 History</div>
-                <button class="clear-btn" onclick="clearHistory()">🗑️ Clear</button>
+                <button class="clear-btn" id="clear-btn">🗑️ Clear</button>
             </div>
             <div class="divider" style="margin-top:0;"></div>
             <div class="history-list" id="history-list"></div>
@@ -395,135 +327,239 @@
     let txHistory = [];
     let activePanel = 'form';
 
-    /* ── Theme ── */
+    // ── Account Types ──
+    const accountTypes = {
+        student:  { label:'🎓 Student',  suspiciousAbove:5000,     dailyLimit:10000,    color:'#7b8cde' },
+        savings:  { label:'👤 Savings',  suspiciousAbove:50000,    dailyLimit:100000,   color:'#06d6a0' },
+        current:  { label:'💳 Current',  suspiciousAbove:200000,   dailyLimit:500000,   color:'#f4a261' },
+        business: { label:'🏢 Business', suspiciousAbove:1000000,  dailyLimit:5000000,  color:'#4cc9f0' },
+        premium:  { label:'💎 Premium',  suspiciousAbove:5000000,  dailyLimit:10000000, color:'#c77dff' }
+    };
+
+    // ── Currencies ──
+    const currencies = {
+        USD:{ symbol:'$',    rate:83    },
+        EUR:{ symbol:'€',    rate:90    },
+        GBP:{ symbol:'£',    rate:105   },
+        JPY:{ symbol:'¥',    rate:0.55  },
+        CNY:{ symbol:'¥',    rate:11.5  },
+        INR:{ symbol:'₹',    rate:1     },
+        CAD:{ symbol:'CA$',  rate:61    },
+        AUD:{ symbol:'A$',   rate:54    },
+        CHF:{ symbol:'CHF',  rate:93    },
+        SGD:{ symbol:'S$',   rate:62    },
+        PHP:{ symbol:'₱',    rate:1.47  }
+    };
+
+    function getAccount() { return accountTypes[document.getElementById('account-type').value]; }
+    function getCurrency() { return currencies[document.getElementById('currency').value]; }
+
+    function updateCurrencyLabel() {
+        const c = getCurrency();
+        document.getElementById('amount-label').textContent = `💰 Amount (${c.symbol})`;
+        updateLimitBar();
+    }
+
+    function updateAccountInfo() { updateLimitBar(); }
+
+    function updateLimitBar() {
+        const amount  = parseFloat(document.getElementById('amount').value) || 0;
+        const c       = getCurrency();
+        const acc     = getAccount();
+        const inr     = amount * c.rate;
+        const pct     = Math.min((inr / acc.dailyLimit) * 100, 100);
+        const fill    = document.getElementById('limit-fill');
+        const pctEl   = document.getElementById('limit-percent');
+        const labelEl = document.getElementById('limit-label');
+
+        fill.style.width      = pct + '%';
+        fill.style.background = pct > 90 ? '#ef233c' : pct > 60 ? '#f4a261' : '#06d6a0';
+        pctEl.textContent     = pct.toFixed(1) + '%';
+        labelEl.textContent   = `${acc.label} daily limit (₹${acc.dailyLimit.toLocaleString()})`;
+    }
+
     function setTheme(t) {
         document.body.setAttribute('data-theme', t);
         localStorage.setItem('fds-theme', t);
     }
     setTheme(localStorage.getItem('fds-theme') || 'dark');
 
-    /* ── Layout engine ── */
+    function timeToSeconds(t) {
+        const [h, m] = t.split(':').map(Number);
+        return h * 3600 + m * 60;
+    }
+
+    function getFraudReasons(amount, timeStr, risk, c, acc) {
+        const inr = amount * c.rate;
+        const h   = parseInt(timeStr.split(':')[0]);
+        const reasons = [];
+
+        if (inr > acc.suspiciousAbove) {
+            reasons.push({ icon:'🚨', text:`${c.symbol}${amount.toFixed(0)} exceeds the suspicious threshold for a ${acc.label} (limit: ₹${acc.suspiciousAbove.toLocaleString()})` });
+        }
+        if (inr > acc.dailyLimit * 0.8) {
+            reasons.push({ icon:'💸', text:`This transaction uses over 80% of your ${acc.label} daily limit` });
+        }
+        if (h >= 0 && h < 6) {
+            reasons.push({ icon:'🌙', text:`Transaction at ${timeStr} — suspicious late night activity` });
+        }
+        if (h >= 22 || h < 4) {
+            reasons.push({ icon:'🕐', text:'Most frauds occur between 10PM and 4AM' });
+        }
+        if (risk > 50) {
+            reasons.push({ icon:'🤖', text:'AI model detected anomalous pattern in transaction data' });
+        }
+        if (reasons.length === 0) {
+            reasons.push({ icon:'🔍', text:'Transaction pattern does not match normal behavior' });
+            reasons.push({ icon:'📊', text:'Multiple subtle risk factors detected by ML model' });
+        }
+        return reasons;
+    }
+
+    function getSafeReasons(amount, timeStr, risk, c, acc) {
+        const inr = amount * c.rate;
+        const h   = parseInt(timeStr.split(':')[0]);
+        const reasons = [];
+
+        if (inr <= acc.suspiciousAbove) {
+            reasons.push({ icon:'✅', text:`Amount ${c.symbol}${amount.toFixed(0)} is within safe range for a ${acc.label}` });
+        }
+        if (h >= 8 && h <= 20) {
+            reasons.push({ icon:'🌤️', text:`Transaction at ${timeStr} — normal business hours` });
+        }
+        if (risk < 20) {
+            reasons.push({ icon:'🛡️', text:'Very low risk score — pattern matches normal behavior' });
+        }
+        reasons.push({ icon:'📊', text:`Transaction is consistent with typical ${acc.label} spending patterns` });
+        return reasons;
+    }
+
     function setLayout() {
         const f = document.getElementById('panel-form');
         const r = document.getElementById('panel-result');
         const h = document.getElementById('panel-history');
         const hasHistory = txHistory.length > 0;
-        const hasResult  = document.getElementById('result-content').style.display !== 'none';
+        const hasResult  = document.getElementById('result-content').style.display === 'flex';
 
-        // Show/hide panels
         r.classList.toggle('hidden', !hasResult);
         h.classList.toggle('hidden', !hasHistory);
 
-        if (!hasResult) {
-            // Only form — centered
-            f.style.flex = '1';
-            document.getElementById('panels').style.justifyContent = 'center';
-            document.getElementById('panels').style.maxWidth = '500px';
-        } else {
-            document.getElementById('panels').style.maxWidth = '1200px';
-            document.getElementById('panels').style.justifyContent = 'flex-start';
+        if (window.innerWidth <= 768) return;
 
+        const panels = document.getElementById('panels');
+        if (!hasResult) {
+            f.style.flex = '1'; panels.style.maxWidth = '500px';
+        } else {
+            panels.style.maxWidth = '1200px';
             if (!hasHistory) {
-                // form 50 | result 50
-                f.style.flex = '5'; r.style.flex = '5';
+                f.style.flex='5'; r.style.flex='5';
             } else {
-                if (activePanel === 'form') {
-                    f.style.flex = '4'; r.style.flex = '4'; h.style.flex = '2';
-                } else if (activePanel === 'result') {
-                    f.style.flex = '2'; r.style.flex = '6'; h.style.flex = '2';
-                } else if (activePanel === 'history') {
-                    f.style.flex = '2'; r.style.flex = '2'; h.style.flex = '6';
-                }
+                if (activePanel==='form')    { f.style.flex='4'; r.style.flex='4'; h.style.flex='2'; }
+                if (activePanel==='result')  { f.style.flex='2'; r.style.flex='6'; h.style.flex='2'; }
+                if (activePanel==='history') { f.style.flex='2'; r.style.flex='2'; h.style.flex='6'; }
             }
         }
-
-        // Update hints
         document.getElementById('result-hint').style.display =
             (activePanel !== 'result' && hasHistory) ? 'block' : 'none';
     }
 
-    /* ── Panel clicks ── */
     document.getElementById('panel-result').addEventListener('click', () => {
-        if (activePanel !== 'result') { activePanel = 'result'; setLayout(); }
+        if (activePanel!=='result') { activePanel='result'; setLayout(); }
     });
     document.getElementById('panel-history').addEventListener('click', () => {
-        if (activePanel !== 'history') { activePanel = 'history'; setLayout(); }
+        if (activePanel!=='history') { activePanel='history'; setLayout(); }
     });
     document.getElementById('panel-form').addEventListener('click', () => {
-        if (activePanel !== 'form') { activePanel = 'form'; setLayout(); }
+        if (activePanel!=='form') { activePanel='form'; setLayout(); }
     });
 
-    /* ── Check transaction ── */
     async function checkTransaction() {
-        const amount  = parseFloat(document.getElementById('amount').value)  || 0;
-        const timeVal = parseFloat(document.getElementById('time-val').value) || 0;
+        const amount   = parseFloat(document.getElementById('amount').value) || 0;
+        const timeStr  = document.getElementById('time-val').value || '14:00';
+        const currency = getCurrency();
+        const acc      = getAccount();
+        const amountINR = amount * currency.rate;
+        const timeVal   = timeToSeconds(timeStr);
         const btn = document.getElementById('check-btn');
+
+        if (amount <= 0) { document.getElementById('amount').focus(); return; }
 
         btn.innerHTML = '<span class="spinner"></span> Analyzing...';
         btn.disabled = true;
 
         try {
             const res  = await fetch('/predict', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount, time: timeVal })
+                method:'POST',
+                headers:{ 'Content-Type':'application/json' },
+                body: JSON.stringify({ amount: amountINR, time: timeVal })
             });
             const data = await res.json();
 
-            // Save history
-            txHistory.unshift({
-                amount, time: timeVal,
-                risk: data.risk,
-                result: data.result,
-                is_fraud: data.is_fraud,
-                ts: new Date().toLocaleTimeString()
-            });
+            // Override: if amount exceeds account suspicious threshold → fraud
+            if (amountINR > acc.suspiciousAbove && !data.is_fraud) {
+                data.is_fraud = true;
+                data.result   = 'Fraud';
+                data.risk     = Math.max(data.risk, 75);
+            }
 
-            renderResult(data, amount, timeVal);
+            txHistory.unshift({ amount, timeStr, currency, acc, risk:data.risk, result:data.result, is_fraud:data.is_fraud, ts:new Date().toLocaleTimeString() });
+
+            renderResult(data, amount, timeStr, currency, acc);
             renderHistory();
             activePanel = 'result';
             setLayout();
-
         } catch(e) {
             console.error(e);
-            alert('Something went wrong. Is Flask running?');
+            alert('Something went wrong. Please try again!');
         }
 
         btn.innerHTML = '🔍 Check Transaction';
         btn.disabled = false;
     }
 
-    /* ── Render result ── */
-    function renderResult(data, amount, timeVal) {
-        const placeholder = document.getElementById('result-placeholder');
-        const content     = document.getElementById('result-content');
-        placeholder.style.display = 'none';
-
-        const isFraud = data.is_fraud;
+    function renderResult(data, amount, timeStr, currency, acc) {
+        document.getElementById('result-placeholder').style.display = 'none';
+        const content = document.getElementById('result-content');
         content.style.display = 'flex';
         content.style.flexDirection = 'column';
         content.style.flex = '1';
 
+        const isFraud = data.is_fraud;
+        const reasons = isFraud
+            ? getFraudReasons(amount, timeStr, data.risk, currency, acc)
+            : getSafeReasons(amount, timeStr, data.risk, currency, acc);
+
+        const reasonsHTML = reasons.map(r => `
+            <div class="reason-item ${isFraud ? 'fraud-r' : 'safe-r'}">
+                <span class="reason-icon">${r.icon}</span>
+                <span>${r.text}</span>
+            </div>`).join('');
+
         content.innerHTML = `
-            <div class="result-box ${isFraud ? 'fraud' : 'normal'}" style="flex:1;">
+            <div class="result-box ${isFraud ? 'fraud' : 'normal'}">
                 <div class="result-emoji">${isFraud ? '🚨' : '✅'}</div>
-                <div class="result-title" style="color:var(${isFraud ? '--danger' : '--success'});">
+                <div class="result-title" style="color:var(${isFraud ? '--danger' : '--success'})">
                     ${isFraud ? 'FRAUD DETECTED!' : 'NORMAL TRANSACTION'}
                 </div>
                 <div class="result-sub">${isFraud ? 'This transaction looks suspicious!' : 'This transaction looks safe!'}</div>
-                <div class="risk-score" style="color:var(${isFraud ? '--danger' : '--success'});">
+                <div class="risk-score" style="color:var(${isFraud ? '--danger' : '--success'})">
                     ${data.risk.toFixed(1)}% Risk
                 </div>
                 <div class="result-meta">
-                    <div class="meta-chip">💰 ₹${amount.toFixed(2)}</div>
-                    <div class="meta-chip">⏱️ ${timeVal.toFixed(0)}s</div>
+                    <div class="meta-chip">💰 ${currency.symbol}${amount.toFixed(2)}</div>
+                    <div class="meta-chip">⏰ ${timeStr}</div>
+                    <div class="meta-chip">${acc.label}</div>
                     <div class="meta-chip">🎯 ${data.result}</div>
                 </div>
-            </div>
-        `;
+                <div class="reasons-box">
+                    <div class="reasons-title" style="color:var(${isFraud ? '--danger' : '--success'})">
+                        ${isFraud ? '⚠️ Why this looks suspicious:' : '✅ Why this looks safe:'}
+                    </div>
+                    ${reasonsHTML}
+                </div>
+            </div>`;
     }
 
-    /* ── Render history ── */
     function renderHistory() {
         const list = document.getElementById('history-list');
         list.innerHTML = '';
@@ -535,40 +571,34 @@
             el.style.borderColor = color;
             el.innerHTML = `
                 <div class="history-item-top">
-                    <span class="history-amount">₹${h.amount.toFixed(2)}</span>
+                    <span class="history-amount">${h.currency.symbol}${h.amount.toFixed(2)}</span>
                     <span class="badge ${badge}">${h.result}</span>
                 </div>
                 <div class="history-meta-text">
-                    ⏱️ ${h.time.toFixed(0)}s &nbsp;|&nbsp; 🎯 ${h.risk.toFixed(1)}% &nbsp;|&nbsp; 🕐 ${h.ts}
-                </div>
-            `;
+                    ${h.acc.label} &nbsp;|&nbsp; ⏰ ${h.timeStr} &nbsp;|&nbsp; 🎯 ${h.risk.toFixed(1)}% &nbsp;|&nbsp; 🕐 ${h.ts}
+                </div>`;
             list.appendChild(el);
         });
         document.getElementById('panel-history').classList.remove('hidden');
     }
 
-    /* ── Clear history ── */
     function clearHistory(e) {
-    if (e) e.stopPropagation();
-    txHistory = [];
-    document.getElementById('history-list').innerHTML = '';
-    
-    // Reset result panel too
-    const content = document.getElementById('result-content');
-    const placeholder = document.getElementById('result-placeholder');
-    content.style.display = 'none';
-    content.innerHTML = '';
-    placeholder.style.display = 'flex';
-    
-    // Reset layout to fresh start
-    activePanel = 'form';
-    setLayout();
-}
+        if (e) e.stopPropagation();
+        txHistory = [];
+        document.getElementById('history-list').innerHTML = '';
+        const content = document.getElementById('result-content');
+        content.style.display = 'none';
+        content.innerHTML = '';
+        document.getElementById('result-placeholder').style.display = 'flex';
+        activePanel = 'form';
+        setLayout();
+    }
 
-    // Override clear button stopPropagation
-    document.querySelector('.clear-btn').addEventListener('click', e => e.stopPropagation());
-
+    document.getElementById('clear-btn').addEventListener('click', e => { e.stopPropagation(); clearHistory(e); });
+    window.addEventListener('resize', setLayout);
     setLayout();
+    updateCurrencyLabel();
+    updateLimitBar();
 </script>
 </body>
 </html>
