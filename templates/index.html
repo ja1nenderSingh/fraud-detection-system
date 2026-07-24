@@ -370,7 +370,8 @@
         document.getElementById('limit-fill').style.width      = pct + '%';
         document.getElementById('limit-fill').style.background = pct > 90 ? '#ef233c' : pct > 60 ? '#f4a261' : '#06d6a0';
         document.getElementById('limit-percent').textContent   = pct.toFixed(1) + '%';
-        document.getElementById('limit-label').textContent     = `${acc.label} daily limit (₹${acc.dailyLimit.toLocaleString()})`;
+        const limitInCurrency = (acc.dailyLimit / c.rate).toFixed(0);
+document.getElementById('limit-label').textContent = `${acc.label} daily limit (${c.symbol}${parseInt(limitInCurrency).toLocaleString()})`;
     }
 
     function setTheme(t) {
